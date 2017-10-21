@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <link rel="stylesheet" type="text/css" href="css/login.css">
+    <style>
+    	.model{width: 400px;height: 200px;background: #fff;opacity: .6;
+    	position: absolute;left: 45%;margin-left: -100px;
+    	top: 95%;margin-top: -50px;border-radius: 10px;display: none;}
+    	.model > .modelscende{width: 100%;height: 30px;color: #fff;font-size: 25px;color: orchid;}
+    	.model > span{display: block;position: absolute;font-size: 18px;
+    	width:100%;height: 30px;left: 0;text-align: center;line-height: 60px;}
+    </style>
+</head>
+<body>
+        <a href=""><button></button></a>
+        <a href=""><button></button></a>
+        <h2></h2>
+        <ul class="ul"></ul>
+        <a href="index.html"><img src="img/未标题-2.gif" class="register-title" alt=""></a>
+        <input type="text" name="username" placeholder="手机号/邮箱/用户名" class="reg1"><br/>
+        <span class='name-error'></span>
+        <p class="box"></p>
+        <p class="box1"></p>
+        <input type="password" name="password" placeholder="密码" class="reg2"><br/>
+        <img src="img/usericon.png" class="pic1" alt="">
+        <input type="submit" value="立即登录" class="center" id="center1">
+        <img src="img/passicon.png" class="pic2" alt="">
+        <div class="argee">
+            <input type="checkbox" checked="checked" id="argee" >
+            <label for="argee" style="color: #ffffff">自动登录</label>
+            <a href="http://www.iliangcang.com/i/our/service" style="color:#0c79cc;margin-left: 155px" >忘记密码?</a>
+        </div>
+        <div class="logo1">
+            <a href="https://im.qq.com/index.shtml" ><img src="img/qq.png" style="width: 21px;" alt=""></a>
+            <a href="https://im.qq.com/index.shtml" ><img src="img/xinlang.png" style="width: 21px;" alt=""></a>
+            <a href="https://im.qq.com/index.shtml" ><img src="img/douban.png" style="width: 21px;" alt=""></a>
+            <a href="https://im.qq.com/index.shtml" ><img src="img/tengxun.png" style="width: 21px;" alt=""></a>
+            <a href="register.html" class="font">注册买买买</a>
+        </div>
+        <script src="js/myajax3.js" charset="utf-8"></script>
+        <script src="js/jquery-3.2.1.min.js"></script>
+        <script>
+            var oH2 = document.querySelector('h2');
+            var xhr = new XMLHttpRequest();
+            var oUl = document.querySelector('.ul');
+        </script>
+        <script>
+            var oUsername = document.querySelector('input[name=username]');
+            var oPassword = document.querySelector('input[name=password]');
+            var oSubmit = document.querySelector('input[type=submit]');
+            var oSpan = document.querySelector('span');
+            var oInput = document.querySelector('input');
+            oSubmit.onclick = function(){
+                $.post('http://h6.duchengjiu.top/shop/api_user.php',
+                        {
+                            status: 'login',
+                            username: oUsername.value,
+                            password: oPassword.value
+                        }, function(json){
+                            localStorage.token = json.data.token;
+                            localStorage.username = json.data.username;
+                            oSpan.innerText = json.message;
+                            oSpan.style.display = 'block'
+                            if (oInput.value === "") {
+                                oSpan.innerText = "请输入内容";
+                                oSpan.className = "error";
+                                oSubmit.disabled = "true";
+                                oSubmit.id = null;
+                            }else if (json.code === 0) {
+                                oSpan.className = "right";
+                                oSubmit.disabled = null;
+                                oSubmit.id = "center1";
+
+                            } else if(json.code === 1000 || json.code === 2001){
+                                oSpan.className = "error";
+                                oSubmit.disabled = "true";
+                                oSubmit.id = null;
+                            }else if (json.code === 1001) {
+                                oSpan.className = "error";
+                                oSubmit.disabled = "true";
+                                oSubmit.id = null;
+                            }
+                           
+                            if (json.code ===0) {
+                            	clearInterval(timer);
+                            	var timer = setInterval(function(){
+                            	var model = document.querySelector(".model");
+                            	var omodelScend = model.querySelector(".modelscende")
+                            	model.style.display = "block";
+                            	omodelScend.innerText -=1;
+                            	console.log(model.innerText);
+                            	if (omodelScend.innerText==0) {
+                            		location.href = "index.html";
+                            		}
+                            	},1000);
+                        }
+                        });
+                        
+            };
+            oUsername.onchange = function () {
+                oSubmit.disabled = null;
+                oSubmit.id = "center1";
+            };
+            oPassword.onchange = function () {
+                oSubmit.disabled = null;
+                oSubmit.id = "center1";
+            }
+            
+        </script>
+        <div class="model">
+        	<span>登录成功再过</span>
+        	<span class="modelscende">3</span>
+        	<span>秒自动跳转至首页</span>
+        </div>
+        <script>
+        	 
+        	 var model = document.querySelector(".model");
+            var ospan = model.querySelectorAll("span"); 		
+                            ospan[0].style.top = "0px";
+                            ospan[1].style.top = "60px";
+                            ospan[2].style.top = "120px";
+        </script>
+</body>
+</html>

@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>首页</title>
+		<link rel="stylesheet" href="css/newfile.css"/>
+	</head>
+	<body>
+		<div class="resgester">
+		  <div class="log"><a href="index.html"><i></i>买买买</a></div>
+		  <ul class="news">
+		  	<li><a href="login.html" class="oldcolor" id="loginchange">登录</a></li>
+		  		<div></div>
+		  	<li><a href="register.html" class="oldcolor" id="signout">注册</a></li>
+		  	<div></div>
+		  	<li><a href="mycart.html" class="news_color" id="goodscar">购物车</a></li>
+		  	<div></div>
+		  	<li><a href="Order.html" class="news_color">我的订单</a></li>
+		  	<div></div>
+		  	
+		  	<li class="searchparent"><input class="search" placeholder="search" type="text" /></li>
+		  	<div></div>
+		  	<li class="searchbox"></li>
+		  </ul>
+		</div>
+		<script type="text/javascript" src="js/animate.js" ></script>
+		<script type="text/javascript" src="js/myajax.js" ></script>
+		<script type="text/javascript" src="js/jquery-3.2.1.min.js" ></script>
+		<script type="text/javascript" src="js/underscore.js" ></script>
+		<script type="text/javascript" src="js/toast.js" ></script>
+		<script type="text/javascript" src="js/liangcang.js" ></script>
+		<!--***********************************左侧楼层********************************-->
+		<div class="nav_box">
+			<ul class="nav_ul">
+				<li class="everyFloor"><div><span class="first"></span><span>顶部</span></div></li>
+				<li class="everyFloor"><div><span class="first"></span><span>热门</span></div></li>
+				<li class="everyFloor"><div><span class="first"></span><span>家居</span></div></li>
+				<li class="everyFloor"><div><span class="first"></span><span>家具</span></div></li>
+				<li class="everyFloor"><div><span class="first"></span><span>更多</span></div></li>
+				
+			</ul>
+		</div>
+<script>
+function IsPC() {
+        var userAgentInfo = navigator.userAgent;
+        var Agents = ["Android", "iPhone","SymbianOS", "Windows Phone", "iPod"];
+        var flag = true;
+        for (var v = 0; v < Agents.length; v++) {
+            if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                flag = false;
+                break;
+            }
+        }
+        if(window.screen.width>=768){
+             flag = true;
+        }
+        return flag;
+    }
+			 if (!IsPC()) {
+			 	location.href = "http://sy.yegen.online";
+			 }
+</script>
+<script>
+    var oSearch = document.querySelector(".search");
+    oSearch.onkeyup = function(event) {
+        if (event.keyCode === 13) {
+            location.href = "search.html?search_text="+this.value;
+        }
+    }
+</script>
+	<script>
+		var loginChange = document.querySelector("#loginchange");
+		var loginOut = document.querySelector("#signout");
+		var oGoodsCar = document.querySelector("#goodscar");
+		var oNews = document.querySelector(".news")
+		if (localStorage.username) {
+				oNews.style.width = "700px";
+				loginChange.innerText = "用户:"+" "+localStorage.username;
+				loginChange.parentNode.style.width = "100px";
+				loginOut.parentNode.style.width = "80px";
+				loginChange.style.fontSize = "14px";
+				loginOut.style.fontSize = "14px";
+				loginOut.innerText = "退出登录";
+				loginOut.href = "";
+			}
+			loginOut.onclick = function(){
+				if (localStorage.username) {
+					location.reload();
+					localStorage.clear();
+				}
+			}
+				oGoodsCar.onclick = function(){
+				if (localStorage.username) {
+					location.href = "mycart.html";
+				}else{
+					location.href = "login.html";
+				}
+			}
+			var firstLi = document.querySelectorAll(".first");
+			firstLi[0].style.background = "url(img/top.gif)";
+			firstLi[0].style.backgroundSize = "cover";
+			for (var aa = 1; aa < firstLi.length ; aa++) {
+				firstLi[aa].style.background = "url(img/"+(aa+1)+".jpg)";
+			}
+			var currentLi = document.querySelectorAll(".everyFloor");
+			(function(){
+				currentLi[0].style.background = "url(img/top.gif)";
+				currentLi[0].style.backgroundSize = "cover";
+				
+				for (var k = 1 ; k < currentLi.length; k++) {
+					currentLi[k].className = "everyLi";
+					currentLi[k].style.background = "url(img/"+(k+1)+".jpg)";
+//					(function(k){
+//						currentLi[k].onmouseover = function(){
+//						for (var i = 0;i<currentLi.length ; i++) {
+//							currentLi[i].className = "everyLi";
+//							currentLi[i].style.background = "#eee";
+//						}
+//						this.className = "current";
+//						this.style.background = "url(img/"+(k+1)+".jpg)";
+//					}
+//					}(k));
+				}
+//				currentLi[0].className = "current";
+//				currentLi[0].style.background = "url(img/1.jpg)";
+			}());
+			function main(){
+					var oFloorSign = document.querySelectorAll(".floorsign");
+					var scroTopArry = [];
+					var left_nav = document.querySelector(".nav_ul");
+					var left_nav_li = left_nav.querySelectorAll("li");
+					var scrotop = document.body.scrollTop || document.documentElement.scrollTop;
+					for (var k = 0;k<oFloorSign.length;k++) {
+						scroTopArry.push(oFloorSign[k].offsetTop);
+					}
+					var navBox = document.querySelector(".nav_box");
+					var pageHeight = document.documentElement.clientHeight;
+					if (navBox.offsetTop-scrotop<=((pageHeight - navBox.clientHeight)/2)) {
+						navBox.style.position = "fixed";
+						navBox.style.top = (pageHeight - navBox.clientHeight)/2 + "px";
+					}
+					for (var i = 0;i<left_nav_li.length;i++) {
+						if ((scrotop>=(scroTopArry[i])-50)&&(scrotop<(scroTopArry[i]+pageHeight))) {
+							changee(i);
+							for (var n = 0;n<left_nav_li.length;n++) {
+					(function(n){
+						left_nav_li[n].onclick = function(){
+							remove(n,scroTopArry);
+						}
+					}(n));
+				}
+						}
+					}
+				}
+function changee(n){
+	var left_nav = document.querySelector(".nav_ul");
+				var left_nav_li = left_nav.querySelectorAll("li");
+				for (var k = 0;k<left_nav_li.length;k++) {
+							left_nav_li[k].className = "everyLi";
+//							left_nav_li[k].style.background = "#eee"
+						}
+						left_nav_li[n].className = "current";
+//						left_nav_li[n].style.background = "url(img/"+(n+1)+".jpg)";
+			}
+			function remove(n,scroTopArry){
+				var frameNumber = 0;
+				var start = document.body.scrollTop || document.documentElement.scrollTop;
+				if (n === 0) {
+					var distance = scroTopArry[0]-500-start;
+				}else{
+						var distance = scroTopArry[n]-50 - start;
+				}
+				var interval = 10;
+				var time = 600;
+				var frames = time / interval;
+				var step = distance / frames;
+				
+				clearInterval(timer);
+				var timer = setInterval(function(){
+					frameNumber++;
+				if (frameNumber === frames) {
+					clearInterval(timer);
+				}
+				document.body.scrollTop = document.documentElement.scrollTop = frameNumber*step+start;
+				CubicEaseInOut(frameNumber,start,distance,frames);
+				},interval);
+				
+			}
+			function CubicEaseInOut(t, b, c, d) {
+		        if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
+		        return c / 2 * ((t -= 2) * t * t + 2) + b;
+		   }
+		</script>
+<!--************************************选项卡**********************************************-->
+<div class="tab">
+	<ul class="tabtop">
+		<li class="tabLeftButton">促销</li>
+		<div class="middleborder"></div>
+		<li class="tabRightButton">公告</li>
+		<div class="bottomborder"></div>
+		<a href="#">更多</a>
+	</ul>
+	<ul class="tabbottom">
+		<li class="tableft">
+			<a href="#">iPad低至2399</a>
+			<a href="#">办公文具 五件低至6折</a>
+			<a href="#">小电惠聚宝盆任选2件85折</a>
+			<a href="#">家居建材领卷最高减1000</a>
+		</li>
+		<li class="tabright">
+			<a href="#">买买买全球售升级 新域名同步...</a>
+			<a href="#">买买买会员体系全新升级</a>
+			<a href="#">《璟煜隐私》</a>
+			<a href="#">买买买商城到家服务品牌上线</a>
+		</li>
+	</ul>
+</div>
+<script>
+	var tabLeftButton = document.querySelector(".tabLeftButton");
+	var tabRightButton = document.querySelector(".tabRightButton");
+	var tabLeft = document.querySelector(".tableft");
+	var tabRight = document.querySelector(".tabright");
+	var bottomBorder = document.querySelector(".bottomborder");
+	tabLeft.style.display = "block";
+	tabRight.style.display = "none";
+	tabLeftButton.onmouseover = function(){
+		tabLeft.style.display = "block";
+		tabRight.style.display = "none";
+		animate(bottomBorder,{"left":6},400);
+	}
+	tabRightButton.onmouseover = function(){
+		tabRight.style.display = "block";
+		tabLeft.style.display = "none";
+		animate(bottomBorder,{"left":70},400);
+	}
+</script>
+<!--***********************************************************************************************-->
+<div class="magic">
+	<a href="index.html"></a>
+	<span class="magic4">买买买...</span>
+</div>
+<!--***********************************************************************************************-->
+	<script>
+		  var oSearch = document.querySelector(".search");
+		  var oSearchImg = document.querySelector(".searchbox");
+		  var oSearchBox = oSearch.parentNode;
+		  oSearchBox.style.width = "350px";
+		  oSearchBox.style.height = "56px";
+		  oSearchImg.style.marginTop = "15px";
+		  var lock = true;
+		  $(".searchbox").click(function(){
+		  		if (parseInt($(".search").css("right"))<0) {
+		  		if ($(".search").is(":animated")) return;
+		  		$(".search").animate({"right":0},800,function(){
+		  			$(".search").focus();
+		  		});
+		  		}else if($(".search").val()=="") {
+		  			if (!lock) return;
+		  			lock = false;
+		  				toast('请先输入搜索内容\rヾ(๑╹◡╹)ﾉ"', 1500);
+		  				setTimeout(function(){
+		  					lock = true;
+		  				},1500);
+		  		}else if($(".search").val()!=""){
+		  			 location.href = "search.html?search_text="+$(".search").val();
+		  		}
+		  		$(this).mousedown(function(event){
+		  			event.preventDefault();
+		  		})
+		  		});
+		  $(".search").blur(function(event){
+		  	$(this).stop(true,true);
+		  	$(this).animate({"right":-304},800);
+		  });
+		</script>
+		<div class="header">
+			<ul id="nav" class="nav"></ul>
+		</div>
+		<script>
+			var oHeader = document.querySelector(".header")
+			var oLogin = document.querySelector("input[value = 登录]");
+			var oNav = document.querySelector("#nav");
+			$.get("http://h6.duchengjiu.top/shop/api_cat.php",{},function(json){
+				var data = json.data;
+				var str = '';
+				oNav.innerHTML +=`<li><a href = "index.html">首页</a></li>`;
+				for (var i = 0; i < data.length; i++) {
+					str += `
+												<li><a href = "class.html?cat_id=${data[i].cat_id}&page=1">${data[i].cat_name}</a></li>
+												`
+				}
+			$("#nav").append(str);
+			});
+		</script>
+		<!--******************************轮播图***************************-->
+		<ul class="carousel">
+		  <li><a href="#"><img src="img/1070.jpg"></a></li>
+		  <li><a href="#"><img src="img/1073.jpg"></a></li>
+		  <li><a href="#"><img src="img/1074.jpg"></a></li>
+		  <li><a href="#"><img src="img/1075.jpg"></a></li>
+		  <li><a href="#"><img src="img/1076.jpg"></a></li>
+		  <div class="carouselbutton">
+		  	<span></span>
+		  	<span></span>
+		  	<span></span>
+		  	<span></span>
+		  	<span></span>
+		  </div>
+		  <input class="carouselleftbutton" value="<" type="button" />
+		  <input class="carouselrightbutton" value=">" type="button" />
+		</ul>
+		<script>
+		  var carouselLeftButton = document.querySelector(".carouselleftbutton");
+		  var carouselRightButton = document.querySelector(".carouselrightbutton");
+		  var carousel = document.querySelector(".carousel");
+		  var carouselPic = carousel.querySelectorAll("li");
+		  var index = 0;
+		  carouselPic[0].style.display = "block";
+		  carouselPic[0].style.opacity = "1";
+		  var carouselButton = document.querySelector(".carouselbutton");
+		  var carouselSpan = carouselButton.querySelectorAll("span");
+		  carouselSpan[0].style.background = "orange";
+		  var timer = setInterval(move,2000);
+			carouselLeftButton.onclick = function(){
+				if (carouselPic.isAnimated) return;
+				clearInterval(timer);
+				if (index <0) {
+					index = carouselPic.length-1;
+				}
+				move();
+				timer = setInterval(move,2000);
+			}
+			carouselRightButton.onclick = function(){
+				if(carouselPic.isAnimated) return;
+				clearInterval(timer);
+				if (index>carouselPic.length-1) {
+					index = 0;
+				}
+				move();
+				timer = setInterval(move,2000);
+			}
+		  function move(){
+//		 	carouselPic[index].style.display = "block";
+		 	for (var i = 0 ; i < carouselSpan.length ; i++) {
+		 		carouselSpan[i].style.background = "#ccc";
+		 	}
+		 	animate(carouselPic[index],{"opacity":.2},600,function(){
+		 	});
+		 	carouselPic[index].style.display = "none";
+		 	index++;
+		 	if (index>carouselPic.length-1) {
+		 		index = 0;
+		 	}
+		 	if (index<0) {
+		 		index = carouselPic.length-1;
+		 	}
+		 	carouselSpan[index].style.background = "orange";
+		 	carouselPic[index].style.display = "block";
+		 	animate(carouselPic[index],{"opacity":1},600);
+		 	}
+		  indexchang();
+		  function indexchang(){
+		  	for (var k = 0 ; k < carouselSpan.length ; k++) {
+		  		(function(k){
+		  			carouselSpan[k].onclick = function(){
+		  				if(carouselPic[index].isAnimated) return;
+		  				clearInterval(timer);
+		  				
+						animate(carouselPic[index],{"opacity":.2},600,function(){
+							this.style.display = "none";
+						});
+						for (var i = 0 ; i < carouselSpan.length ; i++) {
+		 				carouselSpan[i].style.background = "#ccc";
+		 				}
+		  				carouselSpan[k].style.background = "orange";
+		  				index = k;
+		  				if (index<0) {
+		  					index = carouselPic.length-1;
+		  				}
+		  				carouselPic[index].style.display = "block";
+		  				carouselPic[index].style.opacity = ".2";
+		  				carouselPic[index].style.filter = "alpha(opacity=20)";
+		  				animate(carouselPic[index],{"opacity":1},600);
+		  				timer = setInterval(move,2000);
+		  			}
+		  		}(k));
+		  	}
+		  }
+		</script>
+		<!--******************************************************************-->
+		<ul class="get_hot_goods"></ul>
+		<template>
+			<li class = "hotgoods">
+				<a href = "details.html?goods_id=${goods_id}">
+					<div class = "imgbox"><img src = "${goods_thumb}"></div>
+					<div class = "goodscript">${goods_desc}</div>
+					<div class = "goodsbottom">
+						<span class = "goodsname">${goods_name}</span>
+						<p clsss="price">¥  ${price}</p>
+					</div>
+				</a>
+			</li>
+		</template>
+		<script>
+			var getHotGoods = document.querySelector('.get_hot_goods');
+			$.get("http://h6.duchengjiu.top/shop/api_goods.php",{},function(json){
+				var data = json.data;
+				var str = " ";
+				getHotGoods.innerHTML += `
+														<div class = "floorsign">
+														<div class = "floorbutton">家居</div>
+														</div>
+														`;
+				for (var i = 0 ; i<data.length-2 ; i++) {
+					var complate = document.querySelector("template").innerHTML;
+								str += compile(complate,data[i]);
+				}
+				$(".get_hot_goods").append(str);
+//				hotgoodstyle();
+				main();
+			});
+//			**********************************
+			$.get("http://h6.duchengjiu.top/shop/api_goods.php?cat_id=45",{},function(json){
+				var data = json.data;
+				var str = ' ';
+				getHotGoods.innerHTML +=`
+														<div class = "floorsign">
+														<div class = "floorbutton">热门</div>
+														</div>
+														`;
+				for (var k = 0 ; k<data.length-2 ; k++) {
+					var complate = document.querySelector("template").innerHTML;
+								str += compile(complate,data[k]);
+						}
+				$(".get_hot_goods").append(str);
+					});	
+		</script>
+<div class="bottomer">
+	<div class="loadmore">查看更多</div>
+			<div class="category_box">
+				<ul class="category">
+					<li><span></span><p>品类齐全,轻松购物</p></li>
+					<li><span></span><p>多仓直发,急速配送</p></li>
+					<li><span></span><p>正品行货,精致服务</p></li>
+					<li><span></span><p>天天低价,畅选无忧</p></li>
+				</ul>
+			</div>
+			<div class="guider">
+				<ul class="guiderul">
+					<li>
+						<dl>
+							<dt>购物指南</dt>
+							<dd><a href="#">购物流程</a></dd>
+							<dd><a href="#">会员介绍</a></dd>
+							<dd><a href="#">生活旅行</a></dd>
+							<dd><a href="#">常见问题</a></dd>
+							<dd><a href="#">大家电</a></dd>
+							<dd><a href="#">联系客服</a></dd>
+						</dl>
+					</li>
+					<li>
+						<dl>
+							<dt>配送方式</dt>
+							<dd><a href="#">上门自提</a></dd>
+							<dd><a href="#">211显示到达</a></dd>
+							<dd><a href="#">配送服务查询</a></dd>
+							<dd><a href="#">配送收取标准</a></dd>
+							<dd><a href="#">海外配送</a></dd>
+						</dl>
+					</li>
+					<li>
+						<dl>
+						  <dt>支付方式</dt>
+						  <dd><a href="#">货到付款</a></dd>
+						  <dd><a href="#">在线支付</a></dd>
+						  <dd><a href="#">分期付款</a></dd>
+						  <dd><a href="#">邮局汇款</a></dd>
+						  <dd><a href="#">公司转账</a></dd>
+						</dl>
+					</li>
+					<li>
+						<dl>
+						<dt>售后服务</dt>
+						  <dd><a href="#">收货政策</a></dd>
+						  <dd><a href="#">价格保护</a></dd>
+						  <dd><a href="#">退款说明</a></dd>
+						  <dd><a href="#">返修/退换货</a></dd>
+						  <dd><a href="#">取消订单</a></dd>
+						 </dl>
+					</li>
+					<li>
+						<dl>
+						<dt>特色服务</dt>
+						  <dd><a href="#">夺宝岛</a></dd>
+						  <dd><a href="#">DIY装机</a></dd>
+						  <dd><a href="#">延保服务</a></dd>
+						  <dd><a href="#">璟煜E卡</a></dd>
+						  <dd><a href="#">璟煜通信</a></dd>
+						  <dd><a href="#">璟煜JD+</a></dd>
+						 </dl>
+					</li>
+					<li>
+						<dl>
+							<dt>璟煜自营覆盖区县</dt>
+							<dd>璟煜已向全国2661个区县提供自&nbsp;营配送服务，支持货到付款、&nbsp;POS机刷卡和售后上门服务。</dd>
+							<dd id="lookscript"><a href="#">查看详情<</a></dd>
+						</dl>
+					</li>
+				</ul>
+			</div>
+			<ul class="servie">
+				<li><a href="#">关于我们</a></li>
+				<li><a href="#">联系我们</a></li>
+				<li><a href="#">联系客服</a></li>
+				<li><a href="#">合作招商</a></li>
+				<li><a href="#">商家帮助</a></li>
+				<li><a href="#">营销中心</a></li>
+				<li><a href="#">手机璟煜</a></li>
+				<li><a href="#">友情链接</a></li>
+				<li><a href="#">销售联盟</a></li>
+				<li><a href="#">璟煜社区</a></li>
+				<li><a href="#">风险监测</a></li>
+				<li><a href="#">隐私策略</a></li>
+				<li><a href="#">璟煜公益</a></li>
+				<li><a href="#">English Site</a></li>
+				<li><a href="#">Media  &amp IR</a></li>
+			</ul>
+			<ul class="webmessage">
+				<li><a href="#">京公网安备 11000002000088号</a></li>
+				<li><a href="#">京ICP证070359号</a></li>
+				<li><a href="#">互联网药品信息服务资格证编号(京)-经营性-2014-0008</a></li>
+				<li><a href="#">违法和不良信息举报电话：4006561155</a></li>
+			</ul>
+			<ul class="copyright">
+				<li class="copyleft">Copyright &copy;" 2004 - 2017  璟煜JY.com 版权所有</li>
+				<li>消费者维权热线：4006067733<a href="#">经营证照</a></li>
+			</ul>
+			<ul class="subordinate">
+				<li class="subordinateleft">璟煜旗下网站:<a href="#">璟煜支付</a></li>
+				<li><a href="#">璟煜云</a></li>
+			</ul>
+			<ul class="evalute">
+				<li><a href="#"><i class="evalute1"></i></a></li>
+				<li><a href="#"><i class="evalute2"></i></a></li>
+				<li><a href="#"><i class="evalute3"></i></a></li>
+				<li><a href="#"><i class="evalute4"></i></a></li>
+				<li><a href="#"><i class="evalute5"></i></a></li>
+				<li><a href="#"><i class="evalute6"></i></a></li>
+			</ul>
+		</div>
+		<script>
+			var loadMore = document.querySelector(".loadmore");
+			var categoryBox = document.querySelector(".category_box");
+			var category = categoryBox.querySelector(".category");
+			var categoryScript = category.querySelectorAll("li");
+			(function(){
+				for (var k = 0;k<categoryScript.length; k++) {
+					var step = 42;
+					categoryScript[k].querySelector("span").style.background = "url(img/ico_service.png)";
+					categoryScript[k].querySelector("span").style.backgroundPositionX = "0px";
+					if (k>0) {
+						categoryScript[k].querySelector("span").style.backgroundPositionY = -((step+1)*k)+"px";
+					}else{
+						categoryScript[k].querySelector("span").style.backgroundPositionY = -(step*k)+"px";
+					}
+				}
+			}());
+			loadMore.onclick = function(){
+			$.get("http://h6.duchengjiu.top/shop/api_goods.php",{page},function(json){
+				var data = json.data;
+				var str = ' ';
+				getHotGoods.innerHTML +=`
+														<div class = "floorsign">
+														<div class = "floorbutton">更多</div>
+														</div>
+														`;
+				for (var k = 0 ; k<data.length-2 ; k++) {
+					var complate = document.querySelector("template").innerHTML;
+								str += compile(complate,data[k]);
+						}
+				$(".get_hot_goods").append(str);
+					});	
+					page++;
+			}
+		</script>
+	<!--****************************************吸顶*********************************-->
+	<script>
+		var page = 1;
+		var oHeader = document.querySelector(".header");
+			window.onscroll = function(){
+				var scrollValue = document.body.scrollTop || document.documentElement.scrollTop;
+				var hotGoods = document.querySelectorAll(".hotgoods");
+					if (scrollValue >= 56) {
+						oHeader.style.background = "transparent";
+						oHeader.style.position = "fixed";
+						oHeader.style.top = "0";
+						oHeader.style.zIndex = "99";
+					}else if(scrollValue = 10){
+						oHeader.style.position = "relative"
+						oHeader.style.top = "0px";
+						}
+					main();
+				if (scrollValue>=3000) return;
+				
+				var lock = true;
+				if (scrollValue/$(document).height()>.6) {
+					if (!lock) return;
+				$.get("http://h6.duchengjiu.top/shop/api_goods.php",{page},function(json){
+				var data = json.data;
+				var str = " ";
+				getHotGoods.innerHTML +=`
+														<div class = "floorsign">
+														<div class = "floorbutton">更多<div>
+														</div>
+														`;
+				for (var k = 0 ; k<data.length-2 ; k++) {
+							var complate = document.querySelector("template").innerHTML;
+								str += compile(complate,data[k]);
+						}
+				$(".get_hot_goods").append(str);
+//					hotgoodstyle();
+					});	
+					lock = false;
+					page++;
+				}
+				
+					}
+			function compile(template, data) {
+    			return template.replace(/\$\{([a-zA-Z_]+)\}/g, function(match, $1) {
+      				return data[$1];
+    			});
+  			}
+	</script>
+	</body>
+</html>

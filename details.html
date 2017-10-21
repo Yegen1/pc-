@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>商品详情</title>
+		<!--<link rel="stylesheet" type="text/css" href="css/reset.css">-->
+		<style>
+			body{height: 1160px;}
+			.dts img {
+				width:350px;		
+			}
+			.dts{
+				position: relative;
+				width: 600px;
+				bottom: 300px;
+				left:500px;
+				margin-left:100px;
+				margin-top:40px;
+				text-align: reight;
+				font-size: 25px;
+			}
+			.nmb{
+				width: 50px;
+				text-align: center;
+			}
+			#in-car{
+				margin:20px 0;
+			}
+			.toast {
+			  width: 400px;
+			  text-align: center;
+			  border-radius: 10px;
+			  position: absolute;
+			  left: 45%;
+			  margin-left: -100px;
+			  top: 40%;
+			  padding: 80px 0;
+			  background-color: black;
+			  opacity: .8;
+			  filter: alpha(opacity=20);
+			  color: white;
+			  font-size: 30px;
+}
+.dts h3{
+	color: #3C3C3C;
+}
+.dts p{
+	color: #6c6c6c;
+}
+.dts h2{
+	color: #f40;
+	margin-left: 100px;
+	margin-top:-25px ;
+}
+.dts button {
+	margin-left:20px;
+	font-size: 25px;
+	width: 50px;
+	height: 40px;
+	background-color:#ccc;
+	border-radius: 5px;
+	border: 0;
+}
+.dts button:hover {
+	background-color:#252525;
+	color: #f40;
+}
+.dts .nmb {
+	margin-right: -20px;
+	position: relative;
+	top:-2px;
+	width: 120px;
+	height: 40px;
+	font-size: 20px;
+}
+.dts #in-car {
+	margin-left:37px ;
+	display: block;
+	width:200px;
+	height: 50px;
+	background-color:#f40;
+	border: 0;
+	border-radius:8px;
+	color:white;
+	cursor: pointer;
+}
+.dts #in-car:hover{
+	background-color: #F22D00;
+}
+.car {
+	position: absolute;
+	width:20px;
+	height: 20px;
+	top:77px;
+	left:70px;
+	background-image: url('img/购物车.png');
+	background-size: 100% 100%;
+}
+body>.get_hot_goods{
+	margin-left: 70px;
+}
+		</style>
+		<link rel="stylesheet" href="css/zoom.css">
+		<link rel="stylesheet" href="css/newfile.css">
+	</head>
+	<body>
+		<script src="js/myajax2.js" charset="UTF-8"></script>
+		<script src="js/toast.js" charset="UTF-8"></script>
+		<script src="js/zoom.js" charset="utf-8"></script>
+		<script type="text/javascript" src="js/jquery-3.2.1.min.js" ></script>
+		<script src="js/myajax.js" charset="utf-8"></script>
+		<script type="text/javascript" src="js/animate.js" ></script>
+		<script type="text/javascript" src="js/liangcang.js" ></script>
+		<div class="resgester">
+		  <div class="log"><a href="index.html"><i></i>买买买</a></div>
+		  <ul class="news">
+		  	<li><a href="login.html" class="oldcolor" id="loginchange">登录</a></li>
+		  		<div></div>
+		  	<li><a href="javascript:;" onclick="alerrt()" class="oldcolor" id="signout">注册</a></li>
+		  	<div></div>
+		  	<li><a href="mycart.html" class="news_color" id="goodscar">购物车</a></li>
+		  	<div></div>
+		  	<li><a href="Order.html" class="news_color">我的订单</a></li>
+		  	<div></div>
+		  	<li class="searchparent"><input class="search" placeholder="search" type="text" /></li>
+		  	<div></div>
+		  	<li class="searchbox"></li>
+		  </ul>
+		</div>
+<div class="header">
+	<ul id="nav" class="nav"></ul>
+</div>
+<ul class="get_hot_goods" class="get_hot_goods"></ul>
+<script>
+			var loginChange = document.querySelector("#loginchange");
+			var loginOut = document.querySelector("#signout");
+			var oGoodsCar = document.querySelector("#goodscar");
+			var oNews = document.querySelector(".news")
+			if (localStorage.username) {
+				oNews.style.width = "700px";
+				loginChange.innerText = "用户:"+" "+localStorage.username;
+				loginChange.parentNode.style.width = "100px";
+				loginOut.parentNode.style.width = "80px";
+				loginChange.style.fontSize = "14px";
+				loginOut.style.fontSize = "14px";
+				loginOut.innerText = "退出登录";
+			}else{
+				loginOut.href = "register.html";
+			}
+			function alerrt(){
+				if (localStorage.username) {
+					location.reload();
+					localStorage.clear();
+				}
+			}
+			oGoodsCar.onclick = function(){
+				if (localStorage.username) {
+					location.href = "mycart.html";
+				}else{
+					location.href = "login.html";
+				}
+			}
+	 	  var oSearch = document.querySelector(".search");
+	 	  console.log(oSearch);
+		  var oSearchImg = document.querySelector(".searchbox");
+		  console.dir($(".searchbox"));
+		  var oSearchBox = oSearch.parentNode;
+		  oSearchBox.style.width = "350px";
+		  oSearchBox.style.height = "56px";
+		  oSearchImg.style.marginTop = "15px";
+		 var lock = true;
+		  $(".searchbox").click(function(){
+		  		if (parseInt($(".search").css("right"))<0) {
+		  		if ($(".search").is(":animated")) return;
+		  		$(".search").animate({"right":0},800,function(){
+		  			$(".search").focus();
+		  		});
+		  		}else if($(".search").val()=="") {
+		  			if (!lock) return;
+		  			lock = false;
+		  				toast('请先输入搜索内容\rヾ(๑╹◡╹)ﾉ"', 1500);
+		  				setTimeout(function(){
+		  					lock = true;
+		  				},1500);
+		  		}else if($(".search").val()!=""){
+		  			 location.href = "search.html?search_text="+$(".search").val();
+		  		}
+		  		$(this).mousedown(function(event){
+		  			event.preventDefault();
+		  		})
+		  		});
+		  $(".search").blur(function(event){
+		  	$(this).stop(true,true);
+		  	$(this).animate({"right":-304},800);
+		  });
+	//***************************************************
+	var oHeader = document.querySelector(".header");
+	var oNav = document.querySelector("#nav");
+    var oH2 = document.querySelector('h2');
+    var oUl = document.getElementsByTagName('ul')[0];
+    var oUl1 = document.getElementsByTagName('ul')[1];
+   $.get("http://h6.duchengjiu.top/shop/api_cat.php",{},function(json){
+				var data = json.data;
+				oNav.innerHTML +=`<li><a href = "index.html">首页</a></li>`;
+				for (var i = 0; i < data.length; i++) {
+					oNav.innerHTML += `
+												<li><a href = "class.html?cat_id=${data[i].cat_id}&page=1">${data[i].cat_name}</a></li>
+												`
+				}
+			});
+    function getQueryString(name){
+        var search = location.search.substr(1);
+        var reg = new RegExp("(^|&)"+name+"=([^&]*)(&|$)");
+        var result = search.match(reg);
+        if(result === null) return null;
+        return decodeURIComponent(result[2]);
+    }
+    </script>
+	<script>
+			var goods_id = getQueryString('goods_id');
+			var getGoods = document.querySelector(".get_hot_goods");
+			$.get('http://h6.duchengjiu.top/shop/api_goods.php',{goods_id},function (json){
+				var obj = json.data[0];
+				getGoods.innerHTML += `<div title='${obj.goods_name}' class="product" id="product">
+				<div id="smallPic" class="smallPic">
+					<img src='${obj.goods_thumb}'/>
+					<div id="zoom" class="zoom"></div>
+				</div>
+				<div id="bigPic" class="bigPic"></div>
+				<div class="dts"><h3>${obj.goods_name}</h3></div>
+				<div class="dts"><p>${obj.goods_desc}</p></div>
+				<div class="dts"><p>价格:</p><h2>¥&nbsp${obj.price}</h2></div>
+				<div class="dts">
+					<button class='more'>+</button>
+					<input type="text" value=1 maxlength="2" class="nmb" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v()";>
+					<button class="too-more">-</button><br/>
+					<i class="car"></i>
+					<input  id="in-car" type="button" value="添加到购物车"/>
+				</div>
+				</div>`;	
+		var categoryBox = document.querySelector(".category_box");
+			var category = categoryBox.querySelector(".category");
+			var categoryScript = category.querySelectorAll("li");
+			(function(){
+				for (var k = 0;k<categoryScript.length; k++) {
+					var step = 42;
+					categoryScript[k].querySelector("span").style.background = "url(img/ico_service.png)";
+					categoryScript[k].querySelector("span").style.backgroundPositionX = "0px";
+					if (k>0) {
+						categoryScript[k].querySelector("span").style.backgroundPositionY = -((step+1)*k)+"px";
+					}else{
+						categoryScript[k].querySelector("span").style.backgroundPositionY = -(step*k)+"px";
+					}
+				}
+			}());
+				 zoom(obj.goods_thumb);
+			var oBtn1 = document.getElementsByClassName('more')[0];
+			var oBtn2 = document.getElementsByClassName('too-more')[0];
+			var oNmb = document.getElementsByClassName('nmb')[0];
+			var oSubmit = document.getElementById('in-car');
+			var nowNmb = oNmb.value;
+			oNmb.onblur = function () {
+				 if(oNmb.value === ""){
+					oNmb.value = "1";
+				 }else if (oNmb.value === "0") {
+				oNmb.value = "1";
+			}else if (oNmb.value === "00") {
+				oNmb.value = "1";
+			}
+			}
+			oBtn1.onclick = function () {
+				if (oNmb.value === '99') {
+					nowNmb = '99';
+				}else{
+					nowNmb = oNmb.value;
+					nowNmb++;
+				}
+			oNmb.value = nowNmb;
+			};	
+			oBtn2.onclick = function () {
+				if (oNmb.value === '1') {
+					oNmb.value === '1';
+				}else{
+					nowNmb = oNmb.value;
+					nowNmb--;
+				}
+				oNmb.value = nowNmb;
+			};	
+			oSubmit.onclick = function () {
+				$.post('http://h6.duchengjiu.top/shop/api_cart.php?token='+localStorage.token,{goods_id, number:oNmb.value},function(json) {
+          if (json.code === 0) {
+            toast('添加到购物车成功\rヾ(๑╹◡╹)ﾉ"', 1500);
+          }else if (json.code === 1002) {
+          	toast('请登陆后再购买\r!!!∑(ﾟДﾟノ)ノ', 1500);
+          }else if (json.code === 1003) {
+          	toast('登录信息出错请重新登录\r┭┮﹏┭┮', 1500);
+          }
+        })
+     }
+});
+		</script>
+		<!--<!--****************************************底部部分******************************-->
+		<div class="bottomer">
+				<div class="category_box">
+				<ul class="category">
+					<li><span></span><p>品类齐全,轻松购物</p></li>
+					<li><span></span><p>多仓直发,急速配送</p></li>
+					<li><span></span><p>正品行货,精致服务</p></li>
+					<li><span></span><p>天天低价,畅选无忧</p></li>
+				</ul>
+			</div>
+			<div class="guider">
+				<ul class="guiderul">
+					<li>
+						<dl>
+							<dt>购物指南</dt>
+							<dd><a href="#">购物流程</a></dd>
+							<dd><a href="#">会员介绍</a></dd>
+							<dd><a href="#">生活旅行</a></dd>
+							<dd><a href="#">常见问题</a></dd>
+							<dd><a href="#">大家电</a></dd>
+							<dd><a href="#">联系客服</a></dd>
+						</dl>
+					</li>
+					<li>
+						<dl>
+							<dt>配送方式</dt>
+							<dd><a href="#">上门自提</a></dd>
+							<dd><a href="#">211显示到达</a></dd>
+							<dd><a href="#">配送服务查询</a></dd>
+							<dd><a href="#">配送收取标准</a></dd>
+							<dd><a href="#">海外配送</a></dd>
+						</dl>
+					</li>
+					<li>
+						<dl>
+						  <dt>支付方式</dt>
+						  <dd><a href="#">货到付款</a></dd>
+						  <dd><a href="#">在线支付</a></dd>
+						  <dd><a href="#">分期付款</a></dd>
+						  <dd><a href="#">邮局汇款</a></dd>
+						  <dd><a href="#">公司转账</a></dd>
+						</dl>
+					</li>
+					<li>
+						<dl>
+						<dt>售后服务</dt>
+						  <dd><a href="#">收货政策</a></dd>
+						  <dd><a href="#">价格保护</a></dd>
+						  <dd><a href="#">退款说明</a></dd>
+						  <dd><a href="#">返修/退换货</a></dd>
+						  <dd><a href="#">取消订单</a></dd>
+						 </dl>
+					</li>
+					<li>
+						<dl>
+						<dt>特色服务</dt>
+						  <dd><a href="#">夺宝岛</a></dd>
+						  <dd><a href="#">DIY装机</a></dd>
+						  <dd><a href="#">延保服务</a></dd>
+						  <dd><a href="#">璟煜E卡</a></dd>
+						  <dd><a href="#">璟煜通信</a></dd>
+						  <dd><a href="#">璟煜JD+</a></dd>
+						 </dl>
+					</li>
+					<li>
+						<dl>
+							<dt>璟煜自营覆盖区县</dt>
+							<dd>璟煜已向全国2661个区县提供自&nbsp;营配送服务，支持货到付款、&nbsp;POS机刷卡和售后上门服务。</dd>
+							<dd id="lookscript"><a href="#">查看详情<</a></dd>
+						</dl>
+					</li>
+				</ul>
+			</div>
+			<ul class="servie">
+				<li><a href="#">关于我们</a></li>
+				<li><a href="#">联系我们</a></li>
+				<li><a href="#">联系客服</a></li>
+				<li><a href="#">合作招商</a></li>
+				<li><a href="#">商家帮助</a></li>
+				<li><a href="#">营销中心</a></li>
+				<li><a href="#">手机璟煜</a></li>
+				<li><a href="#">友情链接</a></li>
+				<li><a href="#">销售联盟</a></li>
+				<li><a href="#">璟煜社区</a></li>
+				<li><a href="#">风险监测</a></li>
+				<li><a href="#">隐私策略</a></li>
+				<li><a href="#">璟煜公益</a></li>
+				<li><a href="#">English Site</a></li>
+				<li><a href="#">Media  &amp IR</a></li>
+			</ul>
+			<ul class="webmessage">
+				<li><a href="#">京公网安备 11000002000088号</a></li>
+				<li><a href="#">京ICP证070359号</a></li>
+				<li><a href="#">互联网药品信息服务资格证编号(京)-经营性-2014-0008</a></li>
+				<li><a href="#">违法和不良信息举报电话：4006561155</a></li>
+			</ul>
+			<ul class="copyright">
+				<li class="copyleft">Copyright &copy;" 2004 - 2017  璟煜JD.com 版权所有</li>
+				<li>消费者维权热线：4006067733<a href="#">经营证照</a></li>
+			</ul>
+			<ul class="subordinate">
+				<li class="subordinateleft">璟煜旗下网站:<a href="#">璟煜支付</a></li>
+				<li><a href="#">璟煜云</a></li>
+			</ul>
+			<ul class="evalute">
+				<li><a href="#"><i class="evalute1"></i></a></li>
+				<li><a href="#"><i class="evalute2"></i></a></li>
+				<li><a href="#"><i class="evalute3"></i></a></li>
+				<li><a href="#"><i class="evalute4"></i></a></li>
+				<li><a href="#"><i class="evalute5"></i></a></li>
+				<li><a href="#"><i class="evalute6"></i></a></li>
+			</ul>
+		</div>;
+	</body>
+</html>

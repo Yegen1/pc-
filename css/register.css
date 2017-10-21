@@ -1,0 +1,162 @@
+			img{
+				width:200px;
+			}
+			body{
+				background: #999999;
+			}
+			a {
+			  text-decoration: none;
+			  color: white;
+			}
+			ul{
+				margin-left:15px;
+			}
+			div{
+				margin-bottom: 20px;
+				overflow:hidden;
+				text-overflow:ellipsis;
+				white-space:nowrap;
+			}
+		   button{
+				position: relative;
+				width:50px;
+				height:50px;
+			   	background:#999999 ;
+			   	border: none;
+		   }
+			 span {
+				  display: none;
+				  position: relative;
+				  top:500px;
+				  left:40%;
+				}
+			.right {
+			  color: green;
+			}
+			.error {
+			  color: red;
+			}
+			.box{
+				position: absolute;
+				width: 50px;
+				height: 35px;
+				background:#cbcbcb;
+				left:40.5%;
+				top:593px;
+				border-right: 1px solid white ;
+			}
+			.box1{
+				position: relative;
+				width: 50px;
+				height: 35px;
+				background:#cbcbcb;
+				left:40.5%;
+				top:531px;
+				border-right: 1px solid white ;
+				z-index: 666;
+
+			}
+			.reg1{
+				position: relative;
+				left:40%;
+				top:500px;
+				width: 300px;
+				height: 50px;
+				text-indent: 70px;
+				margin-top:20px ;
+				background: #cbcbcb;
+				border: none;
+			}
+			.reg2{
+				position: relative;
+				left:40%;
+				top:520px;
+				width: 300px;
+				height: 50px;
+				text-indent: 70px;
+				margin-top:20px ;
+				background: #cbcbcb;
+				border: none;
+			}
+			.pic1{
+				position: absolute;
+				width:30px;
+				left:40.7%;
+				top:610px;
+			}
+			.pic2{
+				position:relative;
+				width: 30px;
+				left:40.7%;
+				top:410px;
+				z-index: 999;
+			}
+			.center{
+				position: relative;
+				width:300px;
+				height:50px;
+				left:40%;
+				top: 550px;
+				background: #24282e;
+				color:white;
+				margin-top:50px ;
+				font-size: 16px;
+				border: none;
+				font-weight: bolder;
+			}
+			#center1:hover{
+				background-color: royalblue;
+				font-size: 18px;
+				border-color:yellow ;
+			}
+			.register-title{
+				position: absolute;
+				width: 227px;
+				top:470px;
+				left:42%;
+
+			}
+			.name-error{
+				position: absolute;
+				top: 500px;;
+			}
+			.p1{
+				position: absolute;
+				top: 598px;
+				left:35%;
+				color: white;
+				font-size: 14px;
+
+			}
+			.p2{
+				position: absolute;
+				top: 690px;
+				left:35%;
+				color: white;
+				font-size: 14px;
+			}
+			.argee{
+				position: absolute;
+				top: 770px;
+				left:40%;
+				font-size: 14px;
+			}
+			.logo1{
+				position: absolute;
+				top: 900px;
+				left:39%;
+				width: 500px;
+				height: 200px;;
+
+			}
+			.logo1>a{
+				margin-left: 18px;
+			}
+			.font{
+				top:-6px;
+				left: 70px;;
+				position: relative;
+				font-size: 14px;
+				padding-bottom: 3px;
+				border-bottom: 1px solid white;
+			}
